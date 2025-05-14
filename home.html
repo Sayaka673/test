@@ -1,0 +1,99 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Flask 聊天室</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            max-width: 600px;
+            margin: 0 auto;
+            padding: 20px;
+        }
+        .form-group {
+            margin-bottom: 15px;
+        }
+        label {
+            display: block;
+            margin-bottom: 5px;
+        }
+        input {
+            width: 100%;
+            padding: 8px;
+            box-sizing: border-box;
+        }
+        button {
+            padding: 10px 15px;
+            background-color: #4CAF50;
+            color: white;
+            border: none;
+            cursor: pointer;
+        }
+        .error {
+            color: red;
+            margin-bottom: 15px;
+        }
+        .room-actions {
+            display: flex;
+            gap: 10px;
+        }
+    </style>
+</head>
+<body>
+    <h1>欢迎来到 Flask 聊天室</h1>
+    
+    <div id="error" class="error"></div>
+    
+    <div id="form">
+        <div class="form-group">
+            <label for="name">昵称:</label>
+            <input type="text" id="name" name="name" required>
+        </div>
+        
+        <div class="form-group">
+            <label for="code">房间号 (可选):</label>
+            <input type="text" id="code" name="code">
+        </div>
+        
+        <div class="form-group room-actions">
+            <button id="join">加入房间</button>
+            <button id="create">创建房间</button>
+        </div>
+    </div>
+
+    <script>
+        document.getElementById('join').addEventListener('click', () => handleRoomAction('join'));
+        document.getElementById('create').addEventListener('click', () => handleRoomAction('create'));
+
+        function handleRoomAction(action) {
+            const name = document.getElementById('name').value;
+            const code = document.getElementById('code').value;
+            const errorElement = document.getElementById('error');
+            
+            fetch('http:47.121.199.240/api/rooms', {
+                method: 'POST',
+                headers: {
+                    'Content-Type': 'application/json',
+                },
+                body: JSON.stringify({
+                    name: name,
+                    code: code,
+                    action: action
+                })
+            })
+            .then(response => response.json())
+            .then(data => {
+                if (data.error) {
+                    errorElement.textContent = data.error;
+                } else {
+                    window.location.href = `/room`;
+                }
+            })
+            .catch(error => {
+                errorElement.textContent = '发生错误，请重试';
+            });
+        }
+    </script>
+</body>
+</html>
