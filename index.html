@@ -70,14 +70,12 @@
             const name = document.getElementById('name').value;
             const code = document.getElementById('code').value;
             const errorElement = document.getElementById('error');
-
+            
             fetch('http://47.121.199.240:5001/api/rooms', {
                 method: 'POST',
                 headers: {
                     'Content-Type': 'application/json',
-                    'Origin': window.location.origin  // 明确设置来源
                 },
-                credentials: 'include',  // 允许发送 cookies
                 body: JSON.stringify({
                     name: name,
                     code: code,
