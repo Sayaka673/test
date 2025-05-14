@@ -75,6 +75,7 @@
                 method: 'POST',
                 headers: {
                     'Content-Type': 'application/json',
+                    'Origin': window.location.origin  // 明确设置来源
                 },
                 credentials: 'include',  // 允许发送 cookies
                 body: JSON.stringify({
